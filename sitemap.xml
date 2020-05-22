@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://nuoye-blog.github.io/2020/05/22/pwn/PIE%E8%AF%A6%E8%A7%A3/</loc>
+    
+    <lastmod>2020-05-22T14:21:24.744Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://nuoye-blog.github.io/2020/05/22/pwn/canary%E8%AF%A6%E8%A7%A3/</loc>
     
     <lastmod>2020-05-21T17:23:41.747Z</lastmod>
