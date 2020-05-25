@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://nuoye-blog.github.io/2020/05/25/Android/Android-day1/</loc>
+    
+    <lastmod>2020-05-25T06:30:50.781Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://nuoye-blog.github.io/2020/05/24/wp/2020GKCTF/2020GKCTF-pwn/</loc>
     
     <lastmod>2020-05-24T15:09:05.832Z</lastmod>
