@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://nuoye-blog.github.io/"/>
-  <updated>2020-06-06T15:08:27.972Z</updated>
+  <updated>2020-06-08T13:20:48.542Z</updated>
   <id>https://nuoye-blog.github.io/</id>
   
   <author>
@@ -15,6 +15,36 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Android-day12</title>
+    <link href="https://nuoye-blog.github.io/2020/06/08/Android/Android-day12/"/>
+    <id>https://nuoye-blog.github.io/2020/06/08/Android/Android-day12/</id>
+    <published>2020-06-08T13:20:00.000Z</published>
+    <updated>2020-06-08T13:20:48.542Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="Android应用安全防护的基本策略"><a href="#Android应用安全防护的基本策略" class="headerlink" title="Android应用安全防护的基本策略"></a>Android应用安全防护的基本策略</h1><h2 id="混淆机制"><a href="#混淆机制" class="headerlink" title="混淆机制"></a>混淆机制</h2><h3 id="代码混淆"><a href="#代码混淆" class="headerlink" title="代码混淆"></a>代码混淆</h3><p>在反编译apk后，看到的代码类名、方法名已经代码格式看起来不像正常的Android项目代码，这就是经过混淆的代码。</p><h3 id="资源混淆"><a href="#资源混淆" class="headerlink" title="资源混淆"></a>资源混淆</h3><p>资源混淆的功能具体可看微信团队的开源项目：<a href="https://github.com/shwenzhang/AndResGuard。" target="_blank" rel="noopener">https://github.com/shwenzhang/AndResGuard。</a></p><p>对于资源混淆，在获取到资源对于的int类型值后，可在/res/values/public.xml找到对应的一个name项的值，然后通过这个name的值可以在相应的xml中查找到对应的资源。</p><h2 id="签名保护"><a href="#签名保护" class="headerlink" title="签名保护"></a>签名保护</h2><p>Android中每个应用都有一个唯一的签名。</p><p>为了防止应用被二次打包，可以在程序入口处添加签名验证，从而防止运行被修改的程序。</p><h2 id="手动注册native方法"><a href="#手动注册native方法" class="headerlink" title="手动注册native方法"></a>手动注册native方法</h2><p>在Android中，当程序Java层运行System.loadLibrary(“jnitest”);这行代码后，程序会去载入jnitest.so文件。与此同时，产生一个Load事件，这个事件触发后，程序默认会在载入的.so文件的函数列表中查找JNI_OnLoad函数并执行（卸载时触发UnLoad事件，并查找JNI_OnUnload函数执行。JNI_OnLoad和JNI_OnUnload函数并不强制要求用户去实现）。一般情况下，在C组件中的JNI_OnLoad函数用来实现给VM注册接口，以方便VM可以快速地找到Java代码需要调用的C函数。</p><p>应用层的Java类通过VM而调用native函数，这个搜索的过程可能较为漫长。C组件开发者可以将本地函数向VM进行注册，从而加快后续调用native函数的效率。</p><p>一般而言，对应native层的函数名是：<code>Java_类名_方法名</code></p><p>显示注册需要在native层的代码中调用如下三个函数：</p><p><code>(*env)-&gt;RegisterNatives(env, clazz, methods, methodsLenght)</code>：这个函数用于手动手动注册native方法。clazz就是需要注册native方法的那个类，methods是一个结构体包含name（Java中函数的名字）、signature（用字符串描述了函数的参数和返回值）、fnPtr（函数指针，指向C函数）。</p><p><code>jint JNI_OnLoad(JavaVM* vm, void* reserved)</code>：在这个函数里面执行上面的注册函数。</p><p><code>void JNI_OnUnload(JavaVM* vm, void* reserved)</code></p><h2 id="反调试检测"><a href="#反调试检测" class="headerlink" title="反调试检测"></a>反调试检测</h2><p>ptrace机制有一个特点：如果一个进程被调试了，在它进程的status文件中有一个字段TracerPid会记录调试者的进程id值。通过判断这个TracerPid的值是否为0，就可以判断是否被调试中，从而实现反调试。</p><h1 id="Android中常用权限分析"><a href="#Android中常用权限分析" class="headerlink" title="Android中常用权限分析"></a>Android中常用权限分析</h1><h2 id="辅助功能权限"><a href="#辅助功能权限" class="headerlink" title="辅助功能权限"></a>辅助功能权限</h2><p>Android提供了辅助（Accessibility）功能和服务帮助用户更加简单地操作设备，包括文字转语音、触觉反馈、手势操作、轨迹球和手柄操作。辅助功能实质上就是监听应用窗口变化和事件。</p><p>使用辅助功能的时候必须声明以下权限：</p><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">application</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">service</span> <span class="attr">android:name</span>=<span class="string">".MyAcessibilityService"</span></span></span><br><span class="line"><span class="tag">             <span class="attr">android:label</span>=<span class="string">"@string/accessibility_service_label"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"android.accessibilityservice.AcessibilityService"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">service</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">uses-permisson</span> <span class="attr">android:name</span>=<span class="string">"android.permission.BIND_ACCESSIBILITY_SERVICE"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">application</span>&gt;</span></span><br></pre></td></tr></table></figure><p>在代码中直接打开相应的Intent跳转到授权界面：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Intent accIntent = <span class="keyword">new</span> Intent(Setting.ACTION_ACCESSIBILITY_SERVICE);</span><br><span class="line">startActivity(accIntent);</span><br></pre></td></tr></table></figure><p>存在的风险：可以监听设备当前的窗口变化，分析当前应用的View结构之后模拟点击：</p><ul><li>模拟一些社交App的登录窗口页面，这样用户是无感知的。</li><li>当监听到当前应用是社交App，而且是聊天记录页面时，就可以得知当前聊天记录。</li><li>分析设备中的应用情况，在用户不知情的情况下，模拟点击任何一个应用进行操作，从而获取信息。</li></ul><h2 id="设备管理权限"><a href="#设备管理权限" class="headerlink" title="设备管理权限"></a>设备管理权限</h2><p>作用类似于iPhone中的“查找我的手机”功能，可以快速定位以及擦除设备数据等。另外还可以防止被卸载。</p><p>存在的风险：申请这个权限后，设备相当于是给申请者管理了，他们可以修改设备的锁屏密码、擦除数据等。</p><h2 id="通知栏管理权限"><a href="#通知栏管理权限" class="headerlink" title="通知栏管理权限"></a>通知栏管理权限</h2><p>这个功能专门用于监听设备的通知栏消息。</p><p>存在的风险：与辅助功能一样，申请这个权限后用户设备的通知栏消息就会被它接管。</p><h2 id="VPN开发权限"><a href="#VPN开发权限" class="headerlink" title="VPN开发权限"></a>VPN开发权限</h2><p>存在的风险：如果申请了这个权限，就代表这个设备的网络访问消息会被申请者接管。</p><h1 id="Android中的run-as命令"><a href="#Android中的run-as命令" class="headerlink" title="Android中的run-as命令"></a>Android中的run-as命令</h1><p>run-as命令的作用是可以用root身份运行命令，但是必须携带指定应用包名参数，而且这个应用是debug模式的。即开发中如果想看自己应用的沙盒数据(/data/data/xxx/)，在设备没有root的情况下，可以使用这个命令进行查看。</p><h2 id="命令分析和使用"><a href="#命令分析和使用" class="headerlink" title="命令分析和使用"></a>命令分析和使用</h2><p>使用run-as [packagename]后即可进入相应的目录：/data/data/packagename/。</p><p>Android中命令一般都在/system/bin和/system/xbin目录下，对应的源码都在Android源码目录下的/system/core下。</p><p>run-as命令运行是有诸多限制的：</p><ul><li><p>运行命令的用户id只能是shell和root用户</p></li><li><p>应用的安装必须合法</p></li><li><p>应用的uid必须合法</p></li><li><p>应用是否为debug模式</p></li></ul><h2 id="Linux中的setuid和setgid概念"><a href="#Linux中的setuid和setgid概念" class="headerlink" title="Linux中的setuid和setgid概念"></a>Linux中的setuid和setgid概念</h2><p>Linux/Unix下的可执行文件一旦被设置了setuid标记，使用该可执行程序的进程就将拥有该执行文件的所有者权限。</p><h2 id="Android中setuid和setgid的使用场景"><a href="#Android中setuid和setgid的使用场景" class="headerlink" title="Android中setuid和setgid的使用场景"></a>Android中setuid和setgid的使用场景</h2><h3 id="zygote降级处理"><a href="#zygote降级处理" class="headerlink" title="zygote降级处理"></a>zygote降级处理</h3><p>zygote启动后，会进入一个轮询使用socket来监听ActivityManagerService发来的消息，比如应用的启动，zygote就fork出一个进程，开始运转。因为zygote是root用户的，所以zygote通过setuid、setgid进行降级处理，避免所有fork出来的程序都是root权限。</p><h3 id="su工具原理"><a href="#su工具原理" class="headerlink" title="su工具原理"></a>su工具原理</h3><p>Android手机的root原理是：一个普通进程通过执行su，从而获得一个具有root权限的进程。通过配合superuser这款app，可以在需要时对应用进行授权，从而避免了root权限的滥用。</p><h3 id="run-as命令"><a href="#run-as命令" class="headerlink" title="run-as命令"></a>run-as命令</h3><p>run-as命令本身的uid是root，gid是shell。</p><h2 id="run-as命令的作用"><a href="#run-as命令的作用" class="headerlink" title="run-as命令的作用"></a>run-as命令的作用</h2><p>在Android中要调试一个程序，首先这个程序必须是debug模式的，也就是在AndroidManifest.xml中设置的属性，所以一般是修改XML中的debug属性，然后才进行代码关联调试。</p><h1 id="Android中的allowBackup属性"><a href="#Android中的allowBackup属性" class="headerlink" title="Android中的allowBackup属性"></a>Android中的allowBackup属性</h1><h2 id="allowBackup属性介绍"><a href="#allowBackup属性介绍" class="headerlink" title="allowBackup属性介绍"></a>allowBackup属性介绍</h2><p>Android API Level 8及以上Android系统提供了位应用程序数据的备份和恢复功能，此功能的开关由应用程序中AndroidManifest.xml文件中的allowBackup属性值决定，其默认为true，可通过<code>adb backup</code>或<code>adb restore</code>命令对应用数据进行备份和恢复。</p><p>这个属性的安全风险源于adb backup命令容许任何一个能够打开USB调试开关的人从Android手机中复制应用数据到外设，一旦应用数据被备份后，所有应用数据都可被用户读取；adb restore容许用户指定一个回复的数据，来源来恢复应用程序数据的创建。</p><h1 id="Android中的签名机制"><a href="#Android中的签名机制" class="headerlink" title="Android中的签名机制"></a>Android中的签名机制</h1><h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><h3 id="数据摘要"><a href="#数据摘要" class="headerlink" title="数据摘要"></a>数据摘要</h3><p>数据摘要其实是一种算法，就是对一个数据源进行一个算法操作之后得到一个摘要，也叫作数据指纹。</p><p>消息摘要算法是一种能产生特殊输出格式的算法，其原理是根据一定的运算规则对原始数据进行某种形式的消息提取，提取出的信息就称为原始数据的数据摘要。</p><h3 id="签名文件和证书文件"><a href="#签名文件和证书文件" class="headerlink" title="签名文件和证书文件"></a>签名文件和证书文件</h3><p>签名文件和证书文件是成对出现的，二者不可分离。</p><h3 id="jarsign和signapk工具"><a href="#jarsign和signapk工具" class="headerlink" title="jarsign和signapk工具"></a>jarsign和signapk工具</h3><p>这两个是Android中的签名工具。jarsign是用于jar签名，signapk是用于apk签名。</p><h2 id="Android中的签名流程"><a href="#Android中的签名流程" class="headerlink" title="Android中的签名流程"></a>Android中的签名流程</h2><p>signapk的源码位于：Android源码中的 com/android/signapk/sign.java。</p><p>Android签名apk后，会有一个META-INF目录，这里有三个文件：MANIFEST.MF、CERT.SF、CERT.RSA。</p><h3 id="MANIFEST-MF"><a href="#MANIFEST-MF" class="headerlink" title="MANIFEST.MF"></a>MANIFEST.MF</h3><p>这个文件主要包括apk中所有文件的数据摘要内容。</p><h3 id="CERT-SF"><a href="#CERT-SF" class="headerlink" title="CERT.SF"></a>CERT.SF</h3><p>这个文件先对之前的MANIFEST.MF整个内容做一个SHA1方法哦SHA1-Digest-Manifest字段中。</p><p>然后逐条计算MANIFEST.MF文件中每一个块的SHA1，并进过BASE64编码后，记录在CERT.SF同名块中，属性名是SHA1-Digest。</p><h3 id="CERT-RSA"><a href="#CERT-RSA" class="headerlink" title="CERT.RSA"></a>CERT.RSA</h3><p>这个文件就是对前面CERT.SF文件做签名操作后的结果，也就是前面提到的签名文件。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;Android应用安全防护的基本策略&quot;&gt;&lt;a href=&quot;#Android应用安全防护的基本策略&quot; class=&quot;headerlink&quot; title=&quot;Android应用安全防护的基本策略&quot;&gt;&lt;/a&gt;Android应用安全防护的基本策略&lt;/h1&gt;&lt;h2 id=&quot;混
+      
+    
+    </summary>
+    
+    
+      <category term="Android" scheme="https://nuoye-blog.github.io/categories/Android/"/>
+    
+    
+      <category term="Android" scheme="https://nuoye-blog.github.io/tags/Android/"/>
+    
+      <category term="开发" scheme="https://nuoye-blog.github.io/tags/%E5%BC%80%E5%8F%91/"/>
+    
+      <category term="安全" scheme="https://nuoye-blog.github.io/tags/%E5%AE%89%E5%85%A8/"/>
+    
+  </entry>
   
   <entry>
     <title>Android-day11</title>
@@ -350,9 +380,9 @@
     
       <category term="pwn" scheme="https://nuoye-blog.github.io/tags/pwn/"/>
     
-      <category term="glibc" scheme="https://nuoye-blog.github.io/tags/glibc/"/>
-    
       <category term="ctf" scheme="https://nuoye-blog.github.io/tags/ctf/"/>
+    
+      <category term="glibc" scheme="https://nuoye-blog.github.io/tags/glibc/"/>
     
       <category term="wp" scheme="https://nuoye-blog.github.io/tags/wp/"/>
     
@@ -386,13 +416,13 @@
     
       <category term="pwn" scheme="https://nuoye-blog.github.io/tags/pwn/"/>
     
+      <category term="ctf" scheme="https://nuoye-blog.github.io/tags/ctf/"/>
+    
       <category term="gcc" scheme="https://nuoye-blog.github.io/tags/gcc/"/>
     
       <category term="stack" scheme="https://nuoye-blog.github.io/tags/stack/"/>
     
       <category term="protect" scheme="https://nuoye-blog.github.io/tags/protect/"/>
-    
-      <category term="ctf" scheme="https://nuoye-blog.github.io/tags/ctf/"/>
     
       <category term="pie" scheme="https://nuoye-blog.github.io/tags/pie/"/>
     
@@ -422,6 +452,8 @@
     
       <category term="pwn" scheme="https://nuoye-blog.github.io/tags/pwn/"/>
     
+      <category term="ctf" scheme="https://nuoye-blog.github.io/tags/ctf/"/>
+    
       <category term="gcc" scheme="https://nuoye-blog.github.io/tags/gcc/"/>
     
       <category term="canary" scheme="https://nuoye-blog.github.io/tags/canary/"/>
@@ -429,8 +461,6 @@
       <category term="stack" scheme="https://nuoye-blog.github.io/tags/stack/"/>
     
       <category term="protect" scheme="https://nuoye-blog.github.io/tags/protect/"/>
-    
-      <category term="ctf" scheme="https://nuoye-blog.github.io/tags/ctf/"/>
     
   </entry>
   
@@ -586,41 +616,13 @@
       <category term="tool" scheme="https://nuoye-blog.github.io/categories/tool/"/>
     
     
-      <category term="tool" scheme="https://nuoye-blog.github.io/tags/tool/"/>
-    
       <category term="pwn" scheme="https://nuoye-blog.github.io/tags/pwn/"/>
+    
+      <category term="tool" scheme="https://nuoye-blog.github.io/tags/tool/"/>
     
       <category term="docker" scheme="https://nuoye-blog.github.io/tags/docker/"/>
     
       <category term="glibc" scheme="https://nuoye-blog.github.io/tags/glibc/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>shellcode</title>
-    <link href="https://nuoye-blog.github.io/2020/05/09/pwn/shellcode/"/>
-    <id>https://nuoye-blog.github.io/2020/05/09/pwn/shellcode/</id>
-    <published>2020-05-08T16:00:00.000Z</published>
-    <updated>2020-05-08T17:25:06.515Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="64位可打印shell"><a href="#64位可打印shell" class="headerlink" title="64位可打印shell"></a>64位可打印shell</h1><p>PPYh00AAX1A0hA004X1A4hA00AX1A8QX44Pj0X40PZPjAX4znoNDnRYZnCXA</p><h1 id="pwntools模块"><a href="#pwntools模块" class="headerlink" title="pwntools模块"></a>pwntools模块</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.arch = <span class="string">'amd64'</span> <span class="comment">#64位</span></span><br><span class="line">shellcode = asm(shellcraft.sh())</span><br></pre></td></tr></table></figure><h1 id="shellcode-encoder"><a href="#shellcode-encoder" class="headerlink" title="shellcode_encoder"></a>shellcode_encoder</h1><p>下载地址：<a href="https://github.com/ecx86/shellcode_encoder" target="_blank" rel="noopener">https://github.com/ecx86/shellcode_encoder</a></p><p>自动生成可打印shell：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python ./main.py shellcode rax+29</span><br></pre></td></tr></table></figure><p>其中shellcode为原shellcode的二进制文件，rax+29表示通过call rax执行shellcode。</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h1 id=&quot;64位可打印shell&quot;&gt;&lt;a href=&quot;#64位可打印shell&quot; class=&quot;headerlink&quot; title=&quot;64位可打印shell&quot;&gt;&lt;/a&gt;64位可打印shell&lt;/h1&gt;&lt;p&gt;PPYh00AAX1A0hA004X1A4hA00AX1A8QX44
-      
-    
-    </summary>
-    
-    
-      <category term="pwn" scheme="https://nuoye-blog.github.io/categories/pwn/"/>
-    
-    
-      <category term="pwn" scheme="https://nuoye-blog.github.io/tags/pwn/"/>
-    
-      <category term="ctf" scheme="https://nuoye-blog.github.io/tags/ctf/"/>
     
   </entry>
   
