@@ -478,10 +478,6 @@
       <category term="pwn" scheme="https://nuoye-blog.github.io/categories/pwn/"/>
     
     
-      <category term="pwn" scheme="https://nuoye-blog.github.io/tags/pwn/"/>
-    
-      <category term="ctf" scheme="https://nuoye-blog.github.io/tags/ctf/"/>
-    
       <category term="gcc" scheme="https://nuoye-blog.github.io/tags/gcc/"/>
     
       <category term="pie" scheme="https://nuoye-blog.github.io/tags/pie/"/>
@@ -489,6 +485,10 @@
       <category term="stack" scheme="https://nuoye-blog.github.io/tags/stack/"/>
     
       <category term="protect" scheme="https://nuoye-blog.github.io/tags/protect/"/>
+    
+      <category term="pwn" scheme="https://nuoye-blog.github.io/tags/pwn/"/>
+    
+      <category term="ctf" scheme="https://nuoye-blog.github.io/tags/ctf/"/>
     
   </entry>
   
@@ -514,15 +514,15 @@
       <category term="pwn" scheme="https://nuoye-blog.github.io/categories/pwn/"/>
     
     
-      <category term="pwn" scheme="https://nuoye-blog.github.io/tags/pwn/"/>
-    
-      <category term="ctf" scheme="https://nuoye-blog.github.io/tags/ctf/"/>
-    
       <category term="gcc" scheme="https://nuoye-blog.github.io/tags/gcc/"/>
     
       <category term="stack" scheme="https://nuoye-blog.github.io/tags/stack/"/>
     
       <category term="protect" scheme="https://nuoye-blog.github.io/tags/protect/"/>
+    
+      <category term="pwn" scheme="https://nuoye-blog.github.io/tags/pwn/"/>
+    
+      <category term="ctf" scheme="https://nuoye-blog.github.io/tags/ctf/"/>
     
       <category term="canary" scheme="https://nuoye-blog.github.io/tags/canary/"/>
     
