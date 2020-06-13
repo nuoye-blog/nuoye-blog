@@ -44,9 +44,9 @@
     
       <category term="安全" scheme="https://nuoye-blog.github.io/tags/%E5%AE%89%E5%85%A8/"/>
     
-      <category term="hook" scheme="https://nuoye-blog.github.io/tags/hook/"/>
-    
       <category term="Frida" scheme="https://nuoye-blog.github.io/tags/Frida/"/>
+    
+      <category term="hook" scheme="https://nuoye-blog.github.io/tags/hook/"/>
     
   </entry>
   
@@ -78,9 +78,9 @@
     
       <category term="安全" scheme="https://nuoye-blog.github.io/tags/%E5%AE%89%E5%85%A8/"/>
     
-      <category term="xposed" scheme="https://nuoye-blog.github.io/tags/xposed/"/>
-    
       <category term="hook" scheme="https://nuoye-blog.github.io/tags/hook/"/>
+    
+      <category term="xposed" scheme="https://nuoye-blog.github.io/tags/xposed/"/>
     
   </entry>
   
