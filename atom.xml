@@ -44,9 +44,9 @@
     
       <category term="安全" scheme="https://nuoye-blog.github.io/tags/%E5%AE%89%E5%85%A8/"/>
     
-      <category term="Frida" scheme="https://nuoye-blog.github.io/tags/Frida/"/>
-    
       <category term="hook" scheme="https://nuoye-blog.github.io/tags/hook/"/>
+    
+      <category term="Frida" scheme="https://nuoye-blog.github.io/tags/Frida/"/>
     
   </entry>
   
@@ -78,9 +78,9 @@
     
       <category term="安全" scheme="https://nuoye-blog.github.io/tags/%E5%AE%89%E5%85%A8/"/>
     
-      <category term="hook" scheme="https://nuoye-blog.github.io/tags/hook/"/>
-    
       <category term="xposed" scheme="https://nuoye-blog.github.io/tags/xposed/"/>
+    
+      <category term="hook" scheme="https://nuoye-blog.github.io/tags/hook/"/>
     
   </entry>
   
@@ -514,8 +514,6 @@
     
       <category term="gcc" scheme="https://nuoye-blog.github.io/tags/gcc/"/>
     
-      <category term="pie" scheme="https://nuoye-blog.github.io/tags/pie/"/>
-    
       <category term="stack" scheme="https://nuoye-blog.github.io/tags/stack/"/>
     
       <category term="protect" scheme="https://nuoye-blog.github.io/tags/protect/"/>
@@ -523,6 +521,8 @@
       <category term="pwn" scheme="https://nuoye-blog.github.io/tags/pwn/"/>
     
       <category term="ctf" scheme="https://nuoye-blog.github.io/tags/ctf/"/>
+    
+      <category term="pie" scheme="https://nuoye-blog.github.io/tags/pie/"/>
     
   </entry>
   
@@ -550,6 +550,8 @@
     
       <category term="gcc" scheme="https://nuoye-blog.github.io/tags/gcc/"/>
     
+      <category term="canary" scheme="https://nuoye-blog.github.io/tags/canary/"/>
+    
       <category term="stack" scheme="https://nuoye-blog.github.io/tags/stack/"/>
     
       <category term="protect" scheme="https://nuoye-blog.github.io/tags/protect/"/>
@@ -557,8 +559,6 @@
       <category term="pwn" scheme="https://nuoye-blog.github.io/tags/pwn/"/>
     
       <category term="ctf" scheme="https://nuoye-blog.github.io/tags/ctf/"/>
-    
-      <category term="canary" scheme="https://nuoye-blog.github.io/tags/canary/"/>
     
   </entry>
   
