@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://nuoye-blog.github.io/"/>
-  <updated>2020-07-24T07:28:40.377Z</updated>
+  <updated>2020-08-19T05:53:13.370Z</updated>
   <id>https://nuoye-blog.github.io/</id>
   
   <author>
@@ -15,6 +15,37 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>扩展ubuntu16磁盘空间</title>
+    <link href="https://nuoye-blog.github.io/2020/08/19/e1fb1422/"/>
+    <id>https://nuoye-blog.github.io/2020/08/19/e1fb1422/</id>
+    <published>2020-08-19T06:00:00.000Z</published>
+    <updated>2020-08-19T05:53:13.370Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>VMware中的ubuntu16感觉用太多了存了很多软件，然后还要编译内核等需要的空间比较大，所以研究了下怎么扩展磁盘。</p><h2 id="VMware中扩展磁盘"><a href="#VMware中扩展磁盘" class="headerlink" title="VMware中扩展磁盘"></a>VMware中扩展磁盘</h2><p>点击磁盘，扩展：</p><p><img src= data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs= data-src="https://cdn.jsdelivr.net/gh/nuoye-blog/pic/img/20200819124037.png" alt="image-20200819124028405"></p><p>修改为想要扩展的大小：</p><p><img src= data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs= data-src="https://cdn.jsdelivr.net/gh/nuoye-blog/pic/img/20200819124045.png" alt="image-20200819124044960"></p><p>然后确定即可。</p><h2 id="Linux中添加该磁盘空间"><a href="#Linux中添加该磁盘空间" class="headerlink" title="Linux中添加该磁盘空间"></a>Linux中添加该磁盘空间</h2><p>在vmware中添加后还不算完成，需要在linux中将磁盘空间分配上去才行。</p><p>下载软件gparted并运行（需要root权限）:</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo apt-get install gparted</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> sudo gparted</span></span><br></pre></td></tr></table></figure><p>界面如下：</p><p><img src= data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs= data-src="https://cdn.jsdelivr.net/gh/nuoye-blog/pic/img/20200819134941.png" alt="image-20200819133847264"></p><p>因为这时候原有的空间和新添加的空间中间被分割了，所以需要先去掉swap等分区。</p><p>可以看到钥匙标志，表示该分区被锁定。选中linux-swap，右键选择Swapoff即可去除锁定:</p><p><img src= data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs= data-src="https://cdn.jsdelivr.net/gh/nuoye-blog/pic/img/20200819135046.png" alt="image-20200819134048074"></p><p>接着依次delete掉linux-swap和extended分区：</p><p><img src= data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs= data-src="https://cdn.jsdelivr.net/gh/nuoye-blog/pic/img/20200819135059.png" alt="image-20200819134149805"></p><p>可以看到在连在一起了，再右键点击ext4，选择Resize/Move，将空间分配进去：</p><p><img src= data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs= data-src="https://cdn.jsdelivr.net/gh/nuoye-blog/pic/img/20200819135106.png" alt="image-20200819134244736"></p><p>然后右键点击unallocated，将剩下的空间分配如下：</p><p><img src= data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs= data-src="https://cdn.jsdelivr.net/gh/nuoye-blog/pic/img/20200819135115.png" alt="image-20200819134407160"></p><p>然后选中extended下的unallocated，右键new，分配swap分区：</p><p><img src= data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs= data-src="https://cdn.jsdelivr.net/gh/nuoye-blog/pic/img/20200819135123.png" alt="image-20200819134638760"></p><p>接着点击<img src= data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs= data-src="https://cdn.jsdelivr.net/gh/nuoye-blog/pic/img/20200819135132.png" alt="image-20200819134725568">，然后再右击linux-swap，选择swapon，即可完成分配。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;VMware中的ubuntu16感觉用太多了存了很多软件，然后还要编译内核等需要的空间比较大，所以研究了下怎么扩展磁盘。&lt;/p&gt;
+&lt;h2 i
+      
+    
+    </summary>
+    
+    
+      <category term="linux" scheme="https://nuoye-blog.github.io/categories/linux/"/>
+    
+    
+      <category term="vmware" scheme="https://nuoye-blog.github.io/tags/vmware/"/>
+    
+      <category term="ubuntu" scheme="https://nuoye-blog.github.io/tags/ubuntu/"/>
+    
+      <category term="linux" scheme="https://nuoye-blog.github.io/tags/linux/"/>
+    
+  </entry>
   
   <entry>
     <title>arm_pwn环境搭建及初探</title>
@@ -40,9 +71,9 @@
     
       <category term="pwn" scheme="https://nuoye-blog.github.io/tags/pwn/"/>
     
-      <category term="ctf" scheme="https://nuoye-blog.github.io/tags/ctf/"/>
-    
       <category term="arm" scheme="https://nuoye-blog.github.io/tags/arm/"/>
+    
+      <category term="ctf" scheme="https://nuoye-blog.github.io/tags/ctf/"/>
     
       <category term="qemu" scheme="https://nuoye-blog.github.io/tags/qemu/"/>
     
@@ -574,51 +605,15 @@
     
       <category term="pwn" scheme="https://nuoye-blog.github.io/tags/pwn/"/>
     
-      <category term="gcc" scheme="https://nuoye-blog.github.io/tags/gcc/"/>
-    
-      <category term="stack" scheme="https://nuoye-blog.github.io/tags/stack/"/>
-    
-      <category term="protect" scheme="https://nuoye-blog.github.io/tags/protect/"/>
-    
       <category term="ctf" scheme="https://nuoye-blog.github.io/tags/ctf/"/>
+    
+      <category term="gcc" scheme="https://nuoye-blog.github.io/tags/gcc/"/>
     
       <category term="pie" scheme="https://nuoye-blog.github.io/tags/pie/"/>
     
-  </entry>
-  
-  <entry>
-    <title>堆栈保护技术详解</title>
-    <link href="https://nuoye-blog.github.io/2020/05/22/8ae31d52/"/>
-    <id>https://nuoye-blog.github.io/2020/05/22/8ae31d52/</id>
-    <published>2020-05-21T17:17:00.000Z</published>
-    <updated>2020-06-10T13:49:40.045Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="什么是堆栈保护技术？"><a href="#什么是堆栈保护技术？" class="headerlink" title="什么是堆栈保护技术？"></a>什么是堆栈保护技术？</h2><p>堆栈保护技术（即Stack canary）是用于防护栈溢出攻击的一种保护机制：在栈上的返回地址跟ebp之前加上一个标志位canary，返回时通过验证这个canary是否被改写，从而判断程序是否被栈溢出攻击。</p><h2 id="如何开启堆栈保护技术？"><a href="#如何开启堆栈保护技术？" class="headerlink" title="如何开启堆栈保护技术？"></a>如何开启堆栈保护技术？</h2><p>用gcc编译时，可以用以下参数来设置：</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-fstack-protector 启用保护，不过只为局部变量中含有数组的函数插入保护</span><br><span class="line">-fstack-protector-all 启用保护，为所有函数插入保护</span><br><span class="line">-fstack-protector-strong</span><br><span class="line">-fstack-protector-<span class="keyword">explicit</span> 只对有明确 stack_protect attribute 的函数开启保护</span><br><span class="line">-fno-<span class="built_in">stack</span>-protector 禁用保护</span><br></pre></td></tr></table></figure><h2 id="canary的产生"><a href="#canary的产生" class="headerlink" title="canary的产生"></a>canary的产生</h2><p>在开启了堆栈保护技术程序中，我们再ida经常可以看到用如下的指令来获取canary：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mov     rax, fs:28h</span><br></pre></td></tr></table></figure><p>其中，fs其实是指向当前栈的TLS结构：</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  <span class="keyword">void</span> *tcb;        <span class="comment">/* Pointer to the TCB.  Not necessarily the</span></span><br><span class="line"><span class="comment">                       thread descriptor used by libpthread.  */</span></span><br><span class="line">  <span class="keyword">dtv_t</span> *dtv;</span><br><span class="line">  <span class="keyword">void</span> *self;       <span class="comment">/* Pointer to the thread descriptor.  */</span></span><br><span class="line">  <span class="keyword">int</span> multiple_threads;</span><br><span class="line">  <span class="keyword">uintptr_t</span> sysinfo;</span><br><span class="line">  <span class="keyword">uintptr_t</span> stack_guard;</span><br><span class="line">  ...</span><br><span class="line">&#125; <span class="keyword">tcbhead_t</span>;</span><br></pre></td></tr></table></figure><p>fs+0x28h即为stack_guard。</p><p>而TLS结构是由security_init()初始化：</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">security_init</span> <span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="comment">// _dl_random的值在进入这个函数的时候就已经由kernel写入.</span></span><br><span class="line">  <span class="comment">// glibc直接使用了_dl_random的值并没有给赋值</span></span><br><span class="line">  <span class="comment">// 如果不采用这种模式, glibc也可以自己产生随机数</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">//将_dl_random的最后一个字节设置为0x0</span></span><br><span class="line">  <span class="keyword">uintptr_t</span> stack_chk_guard = _dl_setup_stack_chk_guard (_dl_random);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 设置Canary的值到TLS中</span></span><br><span class="line">  THREAD_SET_STACK_GUARD (stack_chk_guard);</span><br><span class="line"></span><br><span class="line">  _dl_random = <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> THREAD_SET_STACK_GUARD(value) \</span></span><br><span class="line">  THREAD_SETMEM (THREAD_SELF, header.stack_guard, value)</span><br></pre></td></tr></table></figure><p>security_init()是ld文件中的一个子函数，在ida中可以看到，初始化canary为如下指令（以2.23版本为例）：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">.text:0000000000003C25                 mov     rdx, cs:qword_225E68</span><br><span class="line">.text:0000000000003C2C                 mov     rax, [rdx]</span><br><span class="line">.text:0000000000003C2F                 xor     al, al</span><br><span class="line">.text:0000000000003C31                 mov     fs:28h, rax</span><br><span class="line">.text:0000000000003C3A                 mov     rax, [rdx+8]</span><br><span class="line">.text:0000000000003C3E                 mov     fs:30h, rax</span><br><span class="line">.text:0000000000003C47                 mov     cs:qword_225E68, 0</span><br><span class="line">.text:0000000000003C52                 mov     cs:qword_225C70, rax</span><br></pre></td></tr></table></figure><p>其中，cs:qword_225E68即对应对应于存放_dl_random的地址。</p><p>（注：fs寄存器的内容可以通过在gdb中直接输入fsbase得到。）</p><p>而_dl_random的地址来自：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">.text:0000000000019741                 cmp     [rsp+78h+var_49], 0</span><br><span class="line">.text:0000000000019746                 jz      loc_1983C</span><br><span class="line">.text:000000000001974C                 mov     rax, [rsp+20h]</span><br><span class="line">.text:0000000000019751                 mov     cs:qword_225E68, rax</span><br></pre></td></tr></table></figure><p>这里下个内存断点来跟进（直接关闭aslr）：</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pwndbg&gt; watch *(0x7fffffffde80+0x20)</span><br><span class="line">Hardware watchpoint 5: *(0x7fffffffde80+0x20)</span><br></pre></td></tr></table></figure><p>结果跟进到 <code>► 0x7ffff7df0786 &lt;_dl_sysdep_start+518&gt;    jmp    _dl_sysdep_start+304 &lt;0x7ffff7df06b0&gt;</code>里面来，在ida下看看：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.text:0000000000019778 loc_19778:</span><br><span class="line">.text:0000000000019778                 mov     rax, [rdx+8] </span><br><span class="line">.text:000000000001977C                 mov     [rsp+78h+var_49], 1</span><br><span class="line">.text:0000000000019781                 mov     [rsp+20h], rax</span><br><span class="line">.text:0000000000019786                 jmp     loc_196B0</span><br></pre></td></tr></table></figure><p>可以看到rsp+0x20的值来自[rdx+8]。分析整个函数，可以得知rdx的值是来自于<code>_dl_sysdep_start</code>函数的第一个参数（有一定的偏移，其值为0x7fffffffdf70，而<code>_dl_random</code>的值为0x7fffffffe2c9）。</p><p>继续追溯可以找到也是_dl_start来自的第一个参数（同样是0x7fffffffdf70）。</p><p>最终追溯到ld中start函数的rsp：0x7fffffffdf70。</p><h2 id="绕过堆栈保护方法"><a href="#绕过堆栈保护方法" class="headerlink" title="绕过堆栈保护方法"></a>绕过堆栈保护方法</h2><p>canary绕过方式总结下有这几种：</p><ol><li>直接通过相邻的变量puts或者printf，然后leak出来</li><li>逐位爆破</li><li>通过覆盖TLS结构（地址可以通过与libc的偏移计算得出）中的canary，从而绕过canary保护</li><li>劫持___stack_chk_fail的got表项</li><li>劫持栈上<code>*** stack smashing detected ***: ./canary terminated</code>中对应<code>./canary</code>处的指针，在发生smashing detected时泄漏出关键信息</li></ol>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h2 id=&quot;什么是堆栈保护技术？&quot;&gt;&lt;a href=&quot;#什么是堆栈保护技术？&quot; class=&quot;headerlink&quot; title=&quot;什么是堆栈保护技术？&quot;&gt;&lt;/a&gt;什么是堆栈保护技术？&lt;/h2&gt;&lt;p&gt;堆栈保护技术（即Stack canary）是用于防护栈溢出攻击的一种保护机制
-      
-    
-    </summary>
-    
-    
-      <category term="pwn" scheme="https://nuoye-blog.github.io/categories/pwn/"/>
-    
-    
-      <category term="pwn" scheme="https://nuoye-blog.github.io/tags/pwn/"/>
-    
-      <category term="gcc" scheme="https://nuoye-blog.github.io/tags/gcc/"/>
-    
-      <category term="canary" scheme="https://nuoye-blog.github.io/tags/canary/"/>
-    
       <category term="stack" scheme="https://nuoye-blog.github.io/tags/stack/"/>
     
       <category term="protect" scheme="https://nuoye-blog.github.io/tags/protect/"/>
-    
-      <category term="ctf" scheme="https://nuoye-blog.github.io/tags/ctf/"/>
     
   </entry>
   
