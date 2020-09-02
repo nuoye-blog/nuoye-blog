@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://nuoye-blog.github.io/"/>
-  <updated>2020-08-29T13:36:40.841Z</updated>
+  <updated>2020-09-02T08:17:55.305Z</updated>
   <id>https://nuoye-blog.github.io/</id>
   
   <author>
@@ -17,11 +17,41 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>core文件</title>
+    <link href="https://nuoye-blog.github.io/2020/09/02/876d1c4/"/>
+    <id>https://nuoye-blog.github.io/2020/09/02/876d1c4/</id>
+    <published>2020-09-02T08:30:00.000Z</published>
+    <updated>2020-09-02T08:17:55.305Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="core文件"><a href="#core文件" class="headerlink" title="core文件"></a>core文件</h2><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>linux下做题时经常发现目录下会多一个core文件，一直不知道是干啥，直到前几天窥屏。。。才发现是程序当前内存的映射，可以结合gdb来查看。</p><h3 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h3><h4 id="开启core-dump"><a href="#开启core-dump" class="headerlink" title="开启core dump"></a>开启core dump</h4><p>在命令行中输入<code>ulimit</code>命令来实现：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ulimit -c #返回值为0时，不会生成core dump文件</span><br><span class="line">ulimit -c unlimited #core dump文件大小不受限制</span><br><span class="line">ulimit -c 1024 #限制core dump文件大小为1024Kb</span><br></pre></td></tr></table></figure><p>以上命令只对当前终端有效。</p><p>永久生效的则需更改文件<code>/etc/security/limits.conf</code>。</p><h4 id="修改core文件保存路径"><a href="#修改core文件保存路径" class="headerlink" title="修改core文件保存路径"></a>修改core文件保存路径</h4><p>默认core文件保存在可执行文件所在的目录下，文件名为core。</p><p>通过修改<code>/proc/sys/kernel/core_uses_pid</code>文件可以让生成core文件名加上pid号。（1表示添加，2表示不添加）</p><p>还可通过修改<code>/proc/sys/kernel/core_pattern</code>来控制生成的core文件保存位置及文件名格式。如<code>echo &quot;/tmp/corefile-%e-%p-%t&quot; &gt; /proc/sys/kernel/core_pattern</code>设置生成的core文件保存在/tmp/corefile目录下，文件名格式为<code>core-命令名-pid-时间戳</code>。</p><h4 id="core文件的使用"><a href="#core文件的使用" class="headerlink" title="core文件的使用"></a>core文件的使用</h4><p>利用命令<code>gdb program core</code>即可调试core文件。</p><h4 id="附：不产生core文件的情况"><a href="#附：不产生core文件的情况" class="headerlink" title="附：不产生core文件的情况"></a>附：不产生core文件的情况</h4><ol><li>进程是设置-用户-ID，而且当前用户并非程序文件的所有者。</li><li>进程是设置-组-ID，而且当前用户并非该程序文件的组所有者。</li><li>用户没有写当前工作目录的许可权。</li><li>文件太大。core文件的许可权(假定该文件在此之前并不存在)通常是用户读/写，组读和其他读。</li></ol>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;core文件&quot;&gt;&lt;a href=&quot;#core文件&quot; class=&quot;headerlink&quot; title=&quot;core文件&quot;&gt;&lt;/a&gt;core文件&lt;/h2&gt;&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;
+      
+    
+    </summary>
+    
+    
+      <category term="linux" scheme="https://nuoye-blog.github.io/categories/linux/"/>
+    
+    
+      <category term="ubuntu" scheme="https://nuoye-blog.github.io/tags/ubuntu/"/>
+    
+      <category term="linux" scheme="https://nuoye-blog.github.io/tags/linux/"/>
+    
+      <category term="gdb" scheme="https://nuoye-blog.github.io/tags/gdb/"/>
+    
+  </entry>
+  
+  <entry>
     <title>记Ubuntu 20.04环境搭建</title>
     <link href="https://nuoye-blog.github.io/2020/08/29/2307c607/"/>
     <id>https://nuoye-blog.github.io/2020/08/29/2307c607/</id>
     <published>2020-08-29T13:40:00.000Z</published>
-    <updated>2020-08-29T13:36:40.841Z</updated>
+    <updated>2020-08-29T13:38:05.296Z</updated>
     
     <content type="html"><![CDATA[<h1 id="记Ubuntu-20-04环境搭建"><a href="#记Ubuntu-20-04环境搭建" class="headerlink" title="记Ubuntu 20.04环境搭建"></a>记Ubuntu 20.04环境搭建</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>提前写好pwn环境搭建留给学弟学妹？</p><h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><h3 id="vm虚拟机安装"><a href="#vm虚拟机安装" class="headerlink" title="vm虚拟机安装"></a>vm虚拟机安装</h3><p>首先上ubuntu官网下载iso文件，接着用vm新建即可。（省略）</p><h3 id="换源"><a href="#换源" class="headerlink" title="换源"></a>换源</h3><p>首先是换源，<a href="https://developer.aliyun.com/mirror/ubuntu?spm=a2c6h.13651102.0.0.3e221b110OXtnt" target="_blank" rel="noopener">参考地址</a></p><p>在terminal中输入：</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo cp /etc/apt/sources.list /etc/apt/sources.list.bck</span><br><span class="line">sudo gedit /etc/apt/sources.list</span><br></pre></td></tr></table></figure><p>然后在弹出的文本中内容替换为如下：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">deb http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; focal main restricted universe multiverse</span><br><span class="line">deb-src http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; focal main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; focal-security main restricted universe multiverse</span><br><span class="line">deb-src http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; focal-security main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; focal-updates main restricted universe multiverse</span><br><span class="line">deb-src http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; focal-updates main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; focal-proposed main restricted universe multiverse</span><br><span class="line">deb-src http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; focal-proposed main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; focal-backports main restricted universe multiverse</span><br><span class="line">deb-src http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; focal-backports main restricted universe multiverse</span><br></pre></td></tr></table></figure><p>然后保存即可。</p><p>然后再在terminal中输入：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update</span><br></pre></td></tr></table></figure><p>这样即可完成换源并更新。</p><h3 id="安装python和pip及pip换源"><a href="#安装python和pip及pip换源" class="headerlink" title="安装python和pip及pip换源"></a>安装python和pip及pip换源</h3><p>ubuntu20已经安装好了python3，不过习惯直接输入python打开，所以输入如下命令即可:</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install python-is-python3</span><br></pre></td></tr></table></figure><p>这样就可以直接输入python来运行python3了。</p><p>接着输入如下命令安装pip：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install python3-pip</span><br></pre></td></tr></table></figure><p>换源（<a href="https://mirrors.tuna.tsinghua.edu.cn/help/pypi/" target="_blank" rel="noopener">参考地址</a>）：</p><p>直接在terminal中输入如下命令即可</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pip3 config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple</span><br></pre></td></tr></table></figure><h3 id="安装pwntools"><a href="#安装pwntools" class="headerlink" title="安装pwntools"></a>安装pwntools</h3><p>直接运行：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pip3 install pwntools</span><br></pre></td></tr></table></figure><p>PS：现在感觉都好容易，当年的，都是泪啊。</p><h3 id="安装pwndbg"><a href="#安装pwndbg" class="headerlink" title="安装pwndbg"></a>安装pwndbg</h3><p> <a href="https://github.com/pwndbg/pwndbg" target="_blank" rel="noopener">官方网址</a></p><p>在terminal中输入如下命令：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/pwndbg/pwndbg</span><br><span class="line">cd pwndbg</span><br><span class="line">./setup.sh</span><br></pre></td></tr></table></figure><p>即可完成安装。</p><h6 id="注："><a href="#注：" class="headerlink" title="注："></a>注：</h6><p>运行setup.sh前，需修改以下内容：</p><p>​    1.将setup.sh中的第24行的<code>sudo apt-get -y install python-pip || true</code>，修改为<code>#sudo apt-get -y install python-pip || true</code>。</p><p>​    2.修改requirements.txt为如下内容：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">future</span><br><span class="line">isort!&#x3D;4.3.0</span><br><span class="line">pip</span><br><span class="line">psutil&gt;&#x3D;3.1.0</span><br><span class="line">pycparser</span><br><span class="line">pyelftools</span><br><span class="line">python-ptrace&gt;&#x3D;0.8</span><br><span class="line">ROPgadget</span><br><span class="line">six</span><br><span class="line">pygments</span><br><span class="line">capstone&#x3D;&#x3D;4.0.1</span><br><span class="line">enum34</span><br><span class="line">pytest</span><br><span class="line">testresources</span><br></pre></td></tr></table></figure><p>至此pwn的基础环境便安装完成了。</p>]]></content>
     
@@ -38,11 +68,11 @@
       <category term="linux" scheme="https://nuoye-blog.github.io/categories/linux/"/>
     
     
-      <category term="vmware" scheme="https://nuoye-blog.github.io/tags/vmware/"/>
-    
       <category term="ubuntu" scheme="https://nuoye-blog.github.io/tags/ubuntu/"/>
     
       <category term="linux" scheme="https://nuoye-blog.github.io/tags/linux/"/>
+    
+      <category term="vmware" scheme="https://nuoye-blog.github.io/tags/vmware/"/>
     
   </entry>
   
@@ -160,11 +190,11 @@
       <category term="linux" scheme="https://nuoye-blog.github.io/categories/linux/"/>
     
     
-      <category term="vmware" scheme="https://nuoye-blog.github.io/tags/vmware/"/>
-    
       <category term="ubuntu" scheme="https://nuoye-blog.github.io/tags/ubuntu/"/>
     
       <category term="linux" scheme="https://nuoye-blog.github.io/tags/linux/"/>
+    
+      <category term="vmware" scheme="https://nuoye-blog.github.io/tags/vmware/"/>
     
   </entry>
   
@@ -567,35 +597,6 @@
       
       
         &lt;h1 id=&quot;广播机制详解&quot;&gt;&lt;a href=&quot;#广播机制详解&quot; class=&quot;headerlink&quot; title=&quot;广播机制详解&quot;&gt;&lt;/a&gt;广播机制详解&lt;/h1&gt;&lt;h2 id=&quot;广播机制简介&quot;&gt;&lt;a href=&quot;#广播机制简介&quot; class=&quot;headerlink&quot; titl
-      
-    
-    </summary>
-    
-    
-      <category term="Android" scheme="https://nuoye-blog.github.io/categories/Android/"/>
-    
-    
-      <category term="Android" scheme="https://nuoye-blog.github.io/tags/Android/"/>
-    
-      <category term="开发" scheme="https://nuoye-blog.github.io/tags/%E5%BC%80%E5%8F%91/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Android-day3</title>
-    <link href="https://nuoye-blog.github.io/2020/05/27/d545b0a5/"/>
-    <id>https://nuoye-blog.github.io/2020/05/27/d545b0a5/</id>
-    <published>2020-05-27T05:40:00.000Z</published>
-    <updated>2020-06-10T13:49:39.981Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>UI开发这块跟代码逻辑无关，所以快速扫过吧，具体内容可以直接找找官方文档。</p><h1 id="UI开发"><a href="#UI开发" class="headerlink" title="UI开发"></a>UI开发</h1><h2 id="常用的控件"><a href="#常用的控件" class="headerlink" title="常用的控件"></a>常用的控件</h2><h3 id="TestView"><a href="#TestView" class="headerlink" title="TestView"></a>TestView</h3><p>用于显示文本显示。</p><h3 id="Button"><a href="#Button" class="headerlink" title="Button"></a>Button</h3><p>用于实现按钮。</p><h3 id="EditText"><a href="#EditText" class="headerlink" title="EditText"></a>EditText</h3><p>用于实现输入框。</p><p>可以使用如下方法获取输入框内容：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">EditText editText;</span><br><span class="line">editText = (EditText) findViewById(R.id.edit_text);</span><br><span class="line">Log.d(<span class="string">"MainActivity"</span>, editText.getText().toString())</span><br></pre></td></tr></table></figure><h3 id="ImageView"><a href="#ImageView" class="headerlink" title="ImageView"></a>ImageView</h3><p>用于在界面上显示图片。</p><p>可以用如下代码修改显示的图片为img_2：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ImageView imageView;</span><br><span class="line">imageView &#x3D; (ImageView) findViewById(R.id.image_view);</span><br><span class="line">imageView.setImageResource(R.drawable.img_2);</span><br></pre></td></tr></table></figure><h3 id="ProgressBar"><a href="#ProgressBar" class="headerlink" title="ProgressBar"></a>ProgressBar</h3><p>用于显示进度条，表示我们的程序正在加载一些项目。</p><p>我们通过控件的setVisibility()来传入View.VISIBLE、View.INVISIBLE和View.GONE这三种值来设置控件的可见性，从而可以进行ProgressBar和其他控件的切换。</p><p>getVisibility()方法可以可判断控件是否可见。</p><h3 id="AlertDialog"><a href="#AlertDialog" class="headerlink" title="AlertDialog"></a>AlertDialog</h3><p>用于在当前界面弹出一个对话框，这个对话框是置顶于所有界面元素之上的，能够屏蔽掉其他控件的交互能力。</p><p>可以在活动中用以下代码创建：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">AlertDialog.Builder dialog = <span class="keyword">new</span> AlertDialog.Builder(MainActivity.<span class="keyword">this</span>);</span><br><span class="line">dialog.setTitle(<span class="string">"This is Dialog"</span>);</span><br><span class="line">dialog.setMessage(<span class="string">"Something important"</span>);</span><br><span class="line">dialog.cancelable(<span class="keyword">false</span>);</span><br><span class="line">dialog.setPositiveButton(<span class="string">"OK"</span>, <span class="keyword">new</span> DialogInterface.OnClickListener()&#123;</span><br><span class="line"><span class="meta">@override</span></span><br><span class="line"><span class="function">pubilc <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(DialogInterface dialog, <span class="keyword">int</span> which)</span></span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line">dialog.setNegativeButton(<span class="string">"Cancel"</span>, <span class="keyword">new</span> DialogInterface.OnClickListener()&#123;</span><br><span class="line"><span class="meta">@override</span></span><br><span class="line"><span class="function">pubilc <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(DialogInterface dialog, <span class="keyword">int</span> which)</span></span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure><p>创建完成后就可以用dialog.show()调用该AlertDialog了。</p><h3 id="ProgressDialog"><a href="#ProgressDialog" class="headerlink" title="ProgressDialog"></a>ProgressDialog</h3><p>弹出对话框以显示进度条。</p><h2 id="详解四种基本布局"><a href="#详解四种基本布局" class="headerlink" title="详解四种基本布局"></a>详解四种基本布局</h2><p><img src= data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs= data-src="./day3/1.jpg" alt=""></p><h3 id="LinearLayout线性布局"><a href="#LinearLayout线性布局" class="headerlink" title="LinearLayout线性布局"></a>LinearLayout线性布局</h3><h3 id="RelativeLayout相对布局"><a href="#RelativeLayout相对布局" class="headerlink" title="RelativeLayout相对布局"></a>RelativeLayout相对布局</h3><h3 id="FrameLayout帧布局"><a href="#FrameLayout帧布局" class="headerlink" title="FrameLayout帧布局"></a>FrameLayout帧布局</h3><h3 id="百分比布局"><a href="#百分比布局" class="headerlink" title="百分比布局"></a>百分比布局</h3><h2 id="创建自定义控件"><a href="#创建自定义控件" class="headerlink" title="创建自定义控件"></a>创建自定义控件</h2><p><img src= data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs= data-src="./day3/2.jpg" alt=""></p><p>View是Android中最基本的一种UI组件，它可以在屏幕上绘制一块矩形区域，并能响应这块区域的各种事件。</p><h2 id="ListView"><a href="#ListView" class="headerlink" title="ListView"></a>ListView</h2><h2 id="RecyclerView"><a href="#RecyclerView" class="headerlink" title="RecyclerView"></a>RecyclerView</h2><h1 id="探究碎片"><a href="#探究碎片" class="headerlink" title="探究碎片"></a>探究碎片</h1><h2 id="什么是碎片"><a href="#什么是碎片" class="headerlink" title="什么是碎片"></a>什么是碎片</h2><p>碎片是一种可以嵌入在活动当中的UI片段，它能让程序更加合理和充分地利用大屏幕的空间。</p><h2 id="动态添加碎片"><a href="#动态添加碎片" class="headerlink" title="动态添加碎片"></a>动态添加碎片</h2><p>动态添加碎片主要分为5步：</p><ol><li>创建待添加的碎片实例。</li><li>获取FragmentManager，在活动中可以直接通过调用getSupportFragmentManager()方法得到。</li><li>开启一个事务，通过调用beginTransaction()方法开启。</li><li>向容器内添加或替换碎片，一般使用replace()方法实现，需要传入容器的id和待添加的碎片实例。</li><li>提交事务，调用commit()方法来完成。</li></ol><h2 id="碎片的生命周期"><a href="#碎片的生命周期" class="headerlink" title="碎片的生命周期"></a>碎片的生命周期</h2><h3 id="碎片的状态和回调"><a href="#碎片的状态和回调" class="headerlink" title="碎片的状态和回调"></a>碎片的状态和回调</h3><h4 id="状态"><a href="#状态" class="headerlink" title="状态"></a>状态</h4><p>运行状态：当一个碎片是可见的，并且它所关联的活动正处于运行状态时，该碎片也处于运行状态。</p><p>暂停状态：当一个活动进入暂停状态，与它相关联的可见碎片就会进入到暂停状态。</p><p>停止状态：当一个活动进入停止状态时，与它相关联的碎片就会进入到停止状态，或者通过调用FragmentTransaction的remove()、replace()方法将碎片从活动中移除，但如果在事务提交之前调用addToBackStack()方法，这时的碎片也会进入到停止状态。</p><p>销毁状态：碎片总是依附于活动而存在的，因此当活动被销毁时，与它相关联的碎片就会进入到销毁状态。或者通过调用FragmentTransaction的remove()、replace()方法将碎片从活动中移除，但在事务提交之前并没有调用addToBackStack()方法，这时的碎片也会进入到销毁状态。</p><h4 id="回调方法"><a href="#回调方法" class="headerlink" title="回调方法"></a>回调方法</h4><p>onAttach()当碎片和活动建立关系的时候调用。</p><p>onCreateView()为碎片创建视图（加载布局）时调用。</p><p>onActivityCreated()确保与碎片相关联的活动一定已经创建完毕的时候调用。</p><p>onDestoryView()当与碎片关联的视图被移除的时候调用。</p><p>onDetach()当碎片和活动解除关联的时候调用。</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;UI开发这块跟代码逻辑无关，所以快速扫过吧，具体内容可以直接找找官方文档。&lt;/p&gt;
-&lt;h1 id=&quot;UI开发&quot;&gt;&lt;a href=&quot;#UI开发
       
     
     </summary>
